@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-towel
+  labels:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: towel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prefect-server
+      app.kubernetes.io/component: towel
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: prefect-server
+        app.kubernetes.io/component: towel
+    spec:
+      serviceAccountName: prefect
+      containers:
+        - name: towel
+          image: prefecthq/server:2021.05.25
+          command:
+            - python
+            - src/prefect_server/services/towel/__main__.py
+          env:
+            - name: PREFECT_SERVER__HASURA__HOST
+              value: prefect-hasura
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: password
+          resources:
+            requests:
+              memory: 64Mi
+              cpu: 250m
+            limits:
+              cpu: 2000m
+              memory: 2Gi

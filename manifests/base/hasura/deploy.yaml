@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-hasura
+  labels:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: hasura
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prefect-server
+      app.kubernetes.io/component: hasura
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: prefect-server
+        app.kubernetes.io/component: hasura
+    spec:
+      serviceAccountName: prefect
+      containers:
+        - name: hasura
+          image: hasura/graphql-engine:v1.3.3
+          command:
+            - graphql-engine
+            - serve
+          env:
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: password
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: database
+            - name: HASURA_GRAPHQL_DATABASE_URL
+              value: postgresql://prefect-postgresql:5432/
+            - name: HASURA_GRAPHQL_ENABLE_CONSOLE
+              value: "true"
+            - name: HASURA_GRAPHQL_SERVER_PORT
+              value: "3000"
+          ports:
+            - name: http
+              containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          resources:
+            requests:
+              memory: 64Mi
+              cpu: 250m
+            limits:
+              cpu: 2000m
+              memory: 2Gi

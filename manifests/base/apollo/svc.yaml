@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prefect-apollo
+  labels:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: apollo
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 4200
+      targetPort: http
+      name: http
+  selector:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: apollo

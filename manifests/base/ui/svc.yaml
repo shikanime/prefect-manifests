@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prefect-ui
+  labels:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: ui
+spec:
+  ports:
+    - port: 8080
+      targetPort: http
+      name: http
+  selector:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: ui

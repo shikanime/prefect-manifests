@@ -1,0 +1,142 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-graphql
+  labels:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: graphql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prefect-server
+      app.kubernetes.io/component: graphql
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: prefect-server
+        app.kubernetes.io/component: graphql
+    spec:
+      serviceAccountName: prefect
+      initContainers:
+        - name: db-upgrade
+          image: prefecthq/server:2021.05.25
+          command:
+            - bash
+            - -c
+            - /usr/local/bin/prefect-server database upgrade --yes
+          env:
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: password
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: database
+            - name: PREFECT_SERVER__DATABASE__CONNECTION_URL
+              value: postgresql://$PGUSER@prefect-postgresql:5432/$PGDATABASE
+            - name: PREFECT_SERVER__HASURA__HOST
+              value: prefect-hasura
+            - name: PREFECT_SERVER__API__URL
+              value: http://prefect-hasura:3000/v1alpha1/graphql
+            - name: PREFECT_SERVER__DATABASE__HOST
+              value: prefect-postgresql
+            - name: PREFECT_SERVER__DATABASE__PORT
+              value: "5432"
+            - name: PREFECT_SERVER__DATABASE__USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: username
+            - name: PREFECT_SERVER__DATABASE__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: password
+            - name: PREFECT_SERVER__HASURA__HOST
+              value: prefect-hasura
+            - name: PREFECT_SERVER__HASURA__PORT
+              value: "3000"
+            - name: PREFECT_SERVER__SERVICES__APOLLO__PORT
+              value: "4200"
+            - name: PREFECT_SERVER__SERVICES__GRAPHQL__PORT
+              value: "4201"
+      containers:
+        - name: graphql
+          image: prefecthq/server:2021.05.25
+          command:
+            - bash
+            - -c
+            - python src/prefect_server/services/graphql/server.py
+          env:
+            - name: PREFECT_SERVER_DB_CMD
+              value: "echo 'DATABASE MIGRATIONS SKIPPED'"
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: password
+            - name: PGDATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: database
+            - name: PREFECT_SERVER__DATABASE__CONNECTION_URL
+              value: postgresql://$PGUSER@prefect-postgresql:5432/$PGDATABASE
+            - name: PREFECT_SERVER__HASURA__HOST
+              value: prefect-hasura
+            - name: PREFECT_SERVER__API__URL
+              value: http://prefect-hasura:3000/v1alpha1/graphql
+            - name: PREFECT_SERVER__DATABASE__HOST
+              value: prefect-postgresql
+            - name: PREFECT_SERVER__DATABASE__PORT
+              value: "5432"
+            - name: PREFECT_SERVER__DATABASE__USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: username
+            - name: PREFECT_SERVER__DATABASE__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: password
+            - name: PREFECT_SERVER__HASURA__HOST
+              value: prefect-hasura
+            - name: PREFECT_SERVER__HASURA__PORT
+              value: "3000"
+            - name: PREFECT_SERVER__SERVICES__APOLLO__PORT
+              value: "4200"
+            - name: PREFECT_SERVER__SERVICES__GRAPHQL__PORT
+              value: "4201"
+          ports:
+            - name: http
+              containerPort: 4201
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          resources:
+            requests:
+              memory: 64Mi
+              cpu: 250m
+            limits:
+              cpu: 2000m
+              memory: 2Gi

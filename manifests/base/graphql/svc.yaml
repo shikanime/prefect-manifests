@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prefect-graphql
+  labels:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: graphql
+spec:
+  ports:
+    - port: 4201
+      targetPort: http
+      name: http
+  selector:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: graphql

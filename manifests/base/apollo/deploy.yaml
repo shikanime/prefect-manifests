@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-apollo
+  labels:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: apollo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prefect-server
+      app.kubernetes.io/component: apollo
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: prefect-server
+        app.kubernetes.io/component: apollo
+    spec:
+      serviceAccountName: prefect
+      containers:
+        - name: apollo
+          image: prefecthq/apollo:2021.05.25
+          command:
+            - bash
+            - -c
+            - /apollo/post-start.sh && npm run serve
+          env:
+            - name: HASURA_API_URL
+              value: http://prefect-hasura:3000/v1alpha1/graphql
+            - name: PREFECT_API_URL
+              value: http://prefect-graphql:4201/graphql/
+            - name: PREFECT_API_HEALTH_URL
+              value: http://prefect-graphql:4201/health
+            - name: GRAPHQL_SERVICE_HOST
+              value: "http://prefect-graphql"
+            - name: GRAPHQL_SERVICE_PORT
+              value: "4201"
+            - name: PREFECT_SERVER__API__URL
+              value: http://prefect-hasura:3000/v1alpha1/graphql
+            - name: PREFECT_SERVER__DATABASE__HOST
+              value: prefect-postgresql
+            - name: PREFECT_SERVER__DATABASE__PORT
+              value: "5432"
+            - name: PREFECT_SERVER__DATABASE__USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: username
+            - name: PREFECT_SERVER__DATABASE__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: prefect-postgresql
+                  key: password
+            - name: PREFECT_SERVER__HASURA__HOST
+              value: prefect-hasura
+            - name: PREFECT_SERVER__HASURA__PORT
+              value: "3000"
+            - name: PREFECT_SERVER__SERVICES__APOLLO__PORT
+              value: "4200"
+            - name: PREFECT_SERVER__SERVICES__GRAPHQL__PORT
+              value: "4201"
+          ports:
+            - name: http
+              containerPort: 4200
+          livenessProbe:
+            httpGet:
+              path: /.well-known/apollo/server-health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /.well-known/apollo/server-health
+              port: http
+          resources:
+            requests:
+              memory: 64Mi
+              cpu: 250m
+            limits:
+              cpu: 2000m
+              memory: 2Gi

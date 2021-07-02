@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prefect-hasura
+  labels:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: hasura
+spec:
+  ports:
+    - port: 3000
+      targetPort: http
+      name: http
+  selector:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: hasura
