@@ -8,8 +8,6 @@ metadata:
 spec:
   serviceName: prefect-postgresql-headless
   replicas: 1
-  updateStrategy:
-    type: RollingUpdate
   selector:
     matchLabels:
       app.kubernetes.io/name: prefect-server

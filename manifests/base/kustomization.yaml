@@ -8,6 +8,5 @@ resources:
   - apollo
   - graphql
   - hasura
-  - postgresql
   - towel
   - ui
