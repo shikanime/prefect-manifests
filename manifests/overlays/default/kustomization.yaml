@@ -7,7 +7,7 @@ secretGenerator:
       - password=aVVGWXh4ajBlTg==
       - database=prefect-server
 resources:
-  - ./job-create-tenant.yaml
+  - ./create-tenant-job.yaml
   - ../../base
 components:
   - ../../components/apollo
