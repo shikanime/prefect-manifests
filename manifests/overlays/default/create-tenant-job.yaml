@@ -27,4 +27,3 @@ spec:
             - name: PREFECT__BACKEND
               value: server
       restartPolicy: OnFailure
-  backoffLimit: 10
