@@ -1,8 +1,0 @@
-apiVersion: skaffold/v2beta18
-kind: Config
-metadata:
-  name: prefect-server
-deploy:
-  kustomize:
-    paths:
-      - overlays/default

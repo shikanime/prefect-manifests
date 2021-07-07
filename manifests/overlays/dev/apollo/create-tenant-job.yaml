@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: create-default-tenant
-          image: prefecthq/prefect:0.14.19
+          image: prefecthq/prefect
           command:
             - bash
             - -c

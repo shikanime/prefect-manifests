@@ -21,7 +21,7 @@ secretGenerator:
       - password=aVVGWXh4ajBlTg==
       - database=prefect-server
 resources:
-  - create-tenant-job.yaml
+  - apollo
   - postgresql
   - ../../base
 components:
