@@ -20,7 +20,7 @@ spec:
       serviceAccountName: prefect-server
       containers:
         - name: towel
-          image: prefecthq/server:2021.05.25
+          image: prefecthq/server
           command:
             - python
             - src/prefect_server/services/towel/__main__.py

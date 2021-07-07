@@ -20,7 +20,7 @@ spec:
       serviceAccountName: prefect-server
       containers:
         - name: hasura
-          image: hasura/graphql-engine:v1.3.3
+          image: hasura/graphql-engine
           command:
             - graphql-engine
             - serve

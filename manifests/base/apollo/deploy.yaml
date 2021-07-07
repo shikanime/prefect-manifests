@@ -20,7 +20,7 @@ spec:
       serviceAccountName: prefect-server
       containers:
         - name: apollo
-          image: prefecthq/apollo:2021.05.25
+          image: prefecthq/apollo
           command:
             - bash
             - -c

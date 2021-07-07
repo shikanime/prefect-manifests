@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: postgresql
-          image: docker.io/bitnami/postgresql:11.9.0-debian-10-r1
+          image: docker.io/bitnami/postgresql
           env:
             - name: BITNAMI_DEBUG
               value: "false"
@@ -94,4 +94,5 @@ spec:
             medium: Memory
             sizeLimit: 1Gi
         - name: data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: prefect-postgresql-data

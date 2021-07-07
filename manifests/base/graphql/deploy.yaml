@@ -71,7 +71,7 @@ spec:
               value: "4201"
       containers:
         - name: graphql
-          image: prefecthq/server:2021.05.25
+          image: prefecthq/server
           command:
             - bash
             - -c

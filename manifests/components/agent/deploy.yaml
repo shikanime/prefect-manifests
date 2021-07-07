@@ -20,7 +20,7 @@ spec:
       serviceAccountName: prefect-server
       containers:
         - name: agent
-          image: prefecthq/prefect:0.14.19
+          image: prefecthq/prefect
           command:
             - bash
             - -c

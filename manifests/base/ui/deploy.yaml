@@ -20,7 +20,7 @@ spec:
       serviceAccountName: prefect-server
       containers:
         - name: ui
-          image: prefecthq/ui:2021-05-25
+          image: prefecthq/ui
           command:
             - /intercept.sh
           env:
