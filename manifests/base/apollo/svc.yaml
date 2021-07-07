@@ -6,7 +6,6 @@ metadata:
     app.kubernetes.io/name: prefect-server
     app.kubernetes.io/component: apollo
 spec:
-  type: LoadBalancer
   ports:
     - port: 4200
       targetPort: http
