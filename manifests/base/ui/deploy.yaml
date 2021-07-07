@@ -17,7 +17,7 @@ spec:
         app.kubernetes.io/name: prefect-server
         app.kubernetes.io/component: ui
     spec:
-      serviceAccountName: prefect
+      serviceAccountName: prefect-server
       containers:
         - name: ui
           image: prefecthq/ui:2021-05-25

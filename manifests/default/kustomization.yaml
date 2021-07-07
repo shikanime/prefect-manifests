@@ -3,9 +3,10 @@ kind: Kustomization
 secretGenerator:
   - name: prefect-postgresql
     literals:
-      - username=prefect
+      - username=prefect-server
       - password=aVVGWXh4ajBlTg==
-      - database=prefect
+      - database=prefect-server
 resources:
   - postgresql
+  - ingress.yaml
   - ../base

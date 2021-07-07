@@ -17,7 +17,7 @@ spec:
         app.kubernetes.io/name: prefect-server
         app.kubernetes.io/component: hasura
     spec:
-      serviceAccountName: prefect
+      serviceAccountName: prefect-server
       containers:
         - name: hasura
           image: hasura/graphql-engine:v1.3.3

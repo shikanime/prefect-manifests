@@ -17,7 +17,7 @@ spec:
         app.kubernetes.io/name: prefect-server
         app.kubernetes.io/component: graphql
     spec:
-      serviceAccountName: prefect
+      serviceAccountName: prefect-server
       initContainers:
         - name: db-upgrade
           image: prefecthq/server:2021.05.25

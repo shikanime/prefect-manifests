@@ -17,7 +17,7 @@ spec:
         app.kubernetes.io/name: prefect-server
         app.kubernetes.io/component: apollo
     spec:
-      serviceAccountName: prefect
+      serviceAccountName: prefect-server
       containers:
         - name: apollo
           image: prefecthq/apollo:2021.05.25
