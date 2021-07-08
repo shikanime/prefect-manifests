@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prefect-postgresql
+  labels:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: prefect-server
+      app.kubernetes.io/component: postgresql
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: prefect-server
+        app.kubernetes.io/component: postgresql
+    spec:
+      serviceAccountName: prefect-server
+      containers:
+        - name: postgresql
+          image: gcr.io/cloudsql-docker/gce-proxy
+          command:
+            - "/cloud_sql_proxy"
+            - "-instances=$CLOUD_SQL_CONNECTION_NAME=tcp:5432"
+          env:
+            - name: CLOUD_SQL_CONNECTION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: prefect-cloud-sql
+                  key: connection-name
+          ports:
+            - name: postgresql
+              containerPort: 5432
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi

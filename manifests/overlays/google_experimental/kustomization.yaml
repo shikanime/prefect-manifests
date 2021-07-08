@@ -1,0 +1,35 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  app.kubernetes.io/version: "2021.05.25"
+  app.kubernetes.io/instance: prefect-server
+images:
+  - name: prefecthq/server
+    newTag: "2021.05.25"
+  - name: prefecthq/apollo
+    newTag: "2021.05.25"
+  - name: hasura/graphql-engine
+    newTag: "v1.3.3"
+  - name: prefecthq/ui
+    newTag: "2021-05-25"
+  - name: prefecthq/prefect
+    newTag: "0.14.19"
+  - name: gcr.io/cloudsql-docker/gce-proxy
+    newTag: "1.17"
+  - name: docker.io/bitnami/postgresql
+    newTag: "11.9.0-debian-10-r1"
+secretGenerator:
+  - name: prefect-postgresql
+    literals:
+      - username=prefect-server
+      - password=aVVGWXh4ajBlTg==
+      - database=prefect-server
+resources:
+  - ../../base
+patchesStrategicMerge:
+  - sa.yaml
+components:
+  - ../../components/apollo
+  - ../../components/ui
+  - ../../components/agent
+  - ../../components/cloud-sql

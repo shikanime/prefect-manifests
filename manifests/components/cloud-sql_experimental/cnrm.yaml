@@ -1,0 +1,41 @@
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLUser
+metadata:
+  name: prefect-server
+  labels:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: postgresql
+spec:
+  instanceRef:
+    name: prefect-server
+  password:
+    valueFrom:
+      secretKeyRef:
+        name: prefect-server
+        key: password
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLDatabase
+metadata:
+  name: prefect-server
+  labels:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: postgresql
+spec:
+  charset: utf8mb4
+  collation: utf8mb4_bin
+  instanceRef:
+    name: prefect-server
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: prefect-server
+  labels:
+    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/component: postgresql
+spec:
+  region: us-central1
+  databaseVersion: POSTGRESQL_13_1
+  settings:
+    tier: db-n1-standard-1
