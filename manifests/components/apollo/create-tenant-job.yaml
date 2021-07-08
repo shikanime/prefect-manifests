@@ -1,27 +1,31 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: prefect-create-default-tenant
+  name: prefect-create-tenant
   labels:
     app.kubernetes.io/name: prefect-server
     app.kubernetes.io/instance: prefect
-    app.kubernetes.io/component: create-default-tenant
+    app.kubernetes.io/component: create-tenant
 spec:
   template:
     metadata:
       labels:
         app.kubernetes.io/name: prefect-server
         app.kubernetes.io/instance: prefect
-        app.kubernetes.io/component: create-default-tenant
+        app.kubernetes.io/component: create-tenant
     spec:
       containers:
-        - name: create-default-tenant
+        - name: create-tenant
           image: prefecthq/prefect
           command:
             - bash
             - -c
-            - prefect server create-tenant --name default --slug default
+            - prefect server create-tenant --name $(PREFECT_TENANT_NAME) --slug $(PREFECT_TENANT_SLUG)
           env:
+            - name: PREFECT_TENANT_NAME
+              value: default
+            - name: PREFECT_TENANT_SLUG
+              value: default
             - name: PREFECT__CLOUD__GRAPHQL
               value: http://prefect-apollo:4200/graphql
             - name: PREFECT__BACKEND

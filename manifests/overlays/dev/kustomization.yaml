@@ -1,8 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 commonLabels:
-  app.kubernetes.io/version: "2021.05.25"
   app.kubernetes.io/instance: prefect-server
+  app.kubernetes.io/version: 2021.05.25
 images:
   - name: prefecthq/server
     newTag: "2021.05.25"
@@ -15,13 +15,12 @@ images:
   - name: prefecthq/prefect
     newTag: "0.14.19"
 secretGenerator:
-  - name: prefect-postgresql
-    literals:
+  - literals:
       - username=prefect-server
       - password=aVVGWXh4ajBlTg==
       - database=prefect-server
+    name: prefect-postgresql
 resources:
-  - apollo
   - postgresql
   - ../../base
 components:
