@@ -21,10 +21,10 @@ secretGenerator:
       - database=prefect-server
     name: prefect-postgresql
 resources:
-  - postgresql
   - ../../base
 components:
-  - ../../components/apollo
-  - ../../components/ui
+  - apollo
+  - ui
+  - postgresql
   - ../../components/agent
   - ../../components/postgresql
