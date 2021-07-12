@@ -14,8 +14,6 @@ images:
   - name: prefecthq/ui
     newTag: "2021-05-25"
   - name: prefecthq/prefect
-    newTag: "0.14.19"
-  - name: gcr.io/cloudsql-docker/gce-proxy
     newTag: "1.17"
   - name: docker.io/bitnami/postgresql
     newTag: "11.9.0-debian-10-r1"
