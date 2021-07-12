@@ -22,9 +22,11 @@ spec:
         - name: db-upgrade
           image: prefecthq/server
           command:
-            - bash
-            - -c
-            - /usr/local/bin/prefect-server database upgrade --yes
+            - prefect-server
+          args:
+            - database
+            - upgrade
+            - --yes
           env:
             - name: PGPASSWORD
               valueFrom:
@@ -58,9 +60,10 @@ spec:
         - name: graphql
           image: prefecthq/server
           command:
-            - bash
-            - -c
-            - python src/prefect_server/services/graphql/server.py
+            - prefect-server
+          args:
+            - services
+            - graphql
           env:
             - name: PREFECT_SERVER_DB_CMD
               value: "echo 'DATABASE MIGRATIONS SKIPPED'"

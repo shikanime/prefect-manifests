@@ -22,9 +22,10 @@ spec:
         - name: apollo
           image: prefecthq/apollo
           command:
-            - bash
-            - -c
-            - /apollo/post-start.sh && npm run serve
+            - npm
+          args:
+            - run
+            - serve
           env:
             - name: HASURA_API_URL
               value: http://prefect-hasura:3000/v1alpha1/graphql

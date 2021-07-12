@@ -22,9 +22,11 @@ spec:
         - name: agent
           image: prefecthq/prefect
           command:
-            - bash
-            - -c
-            - prefect agent kubernetes start
+            - prefect
+          args:
+            - agent
+            - kubernetes
+            - start
           env:
             - name: PREFECT__CLOUD__API
               value: http://prefect-apollo:4200/graphql

@@ -16,9 +16,14 @@ spec:
         - name: create-tenant
           image: prefecthq/prefect
           command:
-            - bash
-            - -c
-            - prefect server create-tenant --name $(PREFECT_TENANT_NAME) --slug $(PREFECT_TENANT_SLUG)
+            - prefect
+          args:
+            - server
+            - create-tenant
+            - --name
+            - $(PREFECT_TENANT_NAME)
+            - --slug
+            - $(PREFECT_TENANT_SLUG)
           env:
             - name: PREFECT_TENANT_NAME
               value: default
