@@ -8,3 +8,4 @@ resources:
   - sts.yaml
   - svc-headless.yaml
   - svc.yaml
+  - pvc.yaml

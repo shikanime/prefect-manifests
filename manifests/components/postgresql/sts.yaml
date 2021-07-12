@@ -3,20 +3,20 @@ kind: StatefulSet
 metadata:
   name: prefect-postgresql
   labels:
-    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/name: prefect
     app.kubernetes.io/component: postgresql
 spec:
   serviceName: prefect-postgresql-headless
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: prefect-server
+      app.kubernetes.io/name: prefect
       app.kubernetes.io/component: postgresql
   template:
     metadata:
       name: prefect-postgresql
       labels:
-        app.kubernetes.io/name: prefect-server
+        app.kubernetes.io/name: prefect
         app.kubernetes.io/component: postgresql
     spec:
       containers:
@@ -34,20 +34,14 @@ spec:
             - name: PGDATA
               value: "/bitnami/postgresql/data"
             - name: POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: prefect-postgresql
-                  key: username
+              value: prefect
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: prefect-postgresql
                   key: password
             - name: POSTGRES_DB
-              valueFrom:
-                secretKeyRef:
-                  name: prefect-postgresql
-                  key: database
+              value: prefect
             - name: POSTGRESQL_ENABLE_LDAP
               value: "no"
             - name: POSTGRESQL_ENABLE_TLS

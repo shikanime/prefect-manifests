@@ -3,21 +3,21 @@ kind: Deployment
 metadata:
   name: prefect-towel
   labels:
-    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/name: prefect
     app.kubernetes.io/component: towel
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: prefect-server
+      app.kubernetes.io/name: prefect
       app.kubernetes.io/component: towel
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: prefect-server
+        app.kubernetes.io/name: prefect
         app.kubernetes.io/component: towel
     spec:
-      serviceAccountName: prefect-server
+      serviceAccountName: prefect
       containers:
         - name: towel
           image: prefecthq/server

@@ -3,8 +3,7 @@ kind: Role
 metadata:
   name: prefect-agent-role
   labels:
-    app.kubernetes.io/name: prefect-server
-    app.kubernetes.io/instance: prefect
+    app.kubernetes.io/name: prefect
     app.kubernetes.io/component: agent-role
 rules:
   - apiGroups:
@@ -36,9 +35,7 @@ kind: RoleBinding
 metadata:
   name: prefect-agent-role-binding
   labels:
-    app.kubernetes.io/name: prefect-server
-    app.kubernetes.io/instance: prefect
-    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: prefect
     app.kubernetes.io/component: agent-role-binding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -46,4 +43,4 @@ roleRef:
   name: prefect-agent-role
 subjects:
   - kind: ServiceAccount
-    name: prefect-server
+    name: prefect

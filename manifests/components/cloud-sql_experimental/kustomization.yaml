@@ -3,7 +3,7 @@ kind: Component
 configMapGenerator:
   - name: prefect-cloud-sql
     literals:
-      - connection-name=prefect-server
+      - connection-name=prefect
 resources:
   - cnrm.yaml
   - deploy.yaml

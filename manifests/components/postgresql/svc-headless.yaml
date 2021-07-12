@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: prefect-postgresql-headless
   labels:
-    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/name: prefect
     app.kubernetes.io/component: postgresql
 spec:
   clusterIP: None
@@ -12,5 +12,5 @@ spec:
       port: 5432
       targetPort: postgresql
   selector:
-    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/name: prefect
     app.kubernetes.io/component: postgresql

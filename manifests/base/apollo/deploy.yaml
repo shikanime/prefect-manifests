@@ -3,21 +3,21 @@ kind: Deployment
 metadata:
   name: prefect-apollo
   labels:
-    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/name: prefect
     app.kubernetes.io/component: apollo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: prefect-server
+      app.kubernetes.io/name: prefect
       app.kubernetes.io/component: apollo
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: prefect-server
+        app.kubernetes.io/name: prefect
         app.kubernetes.io/component: apollo
     spec:
-      serviceAccountName: prefect-server
+      serviceAccountName: prefect
       containers:
         - name: apollo
           image: prefecthq/apollo
@@ -43,10 +43,7 @@ spec:
             - name: PREFECT_SERVER__DATABASE__PORT
               value: "5432"
             - name: PREFECT_SERVER__DATABASE__USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: prefect-postgresql
-                  key: username
+              value: prefect
             - name: PREFECT_SERVER__DATABASE__PASSWORD
               valueFrom:
                 secretKeyRef:

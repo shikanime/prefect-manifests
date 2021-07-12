@@ -1,8 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 commonLabels:
+  app.kubernetes.io/version: "2021.05.25"
   app.kubernetes.io/instance: prefect-server
-  app.kubernetes.io/version: 2021.05.25
 images:
   - name: prefecthq/server
     newTag: "2021.05.25"
@@ -14,17 +14,13 @@ images:
     newTag: "2021-05-25"
   - name: prefecthq/prefect
     newTag: "0.14.19"
+  - name: gcr.io/cloudsql-docker/gce-proxy
+    newTag: "1.17"
+  - name: docker.io/bitnami/postgresql
+    newTag: "11.9.0-debian-10-r1"
 secretGenerator:
-  - literals:
-      - username=prefect-server
-      - password=aVVGWXh4ajBlTg==
-      - database=prefect-server
-    name: prefect-postgresql
+  - name: prefect-postgresql
+    files:
+      - password=PvEdutDpOLPBT6pPMc04Yw==
 resources:
-  - ../../base
-components:
-  - apollo
-  - ui
-  - postgresql
-  - ../../components/agent
-  - ../../components/postgresql
+  - ../../manifests/overlays/google

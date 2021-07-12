@@ -3,46 +3,36 @@ kind: Deployment
 metadata:
   name: prefect-graphql
   labels:
-    app.kubernetes.io/name: prefect-server
+    app.kubernetes.io/name: prefect
     app.kubernetes.io/component: graphql
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: prefect-server
+      app.kubernetes.io/name: prefect
       app.kubernetes.io/component: graphql
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: prefect-server
+        app.kubernetes.io/name: prefect
         app.kubernetes.io/component: graphql
     spec:
-      serviceAccountName: prefect-server
+      serviceAccountName: prefect
       initContainers:
         - name: db-upgrade
-          image: prefecthq/server:2021.05.25
+          image: prefecthq/server
           command:
             - bash
             - -c
             - /usr/local/bin/prefect-server database upgrade --yes
           env:
-            - name: PGUSER
-              valueFrom:
-                secretKeyRef:
-                  name: prefect-postgresql
-                  key: username
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
                   name: prefect-postgresql
                   key: password
-            - name: PGDATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: prefect-postgresql
-                  key: database
             - name: PREFECT_SERVER__DATABASE__CONNECTION_URL
-              value: postgresql://$PGUSER@prefect-postgresql:5432/$PGDATABASE
+              value: postgresql://prefect@prefect-postgresql:5432/prefect
             - name: PREFECT_SERVER__HASURA__HOST
               value: prefect-hasura
             - name: PREFECT_SERVER__API__URL
@@ -52,10 +42,7 @@ spec:
             - name: PREFECT_SERVER__DATABASE__PORT
               value: "5432"
             - name: PREFECT_SERVER__DATABASE__USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: prefect-postgresql
-                  key: username
+              value: prefect
             - name: PREFECT_SERVER__DATABASE__PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -79,23 +66,13 @@ spec:
           env:
             - name: PREFECT_SERVER_DB_CMD
               value: "echo 'DATABASE MIGRATIONS SKIPPED'"
-            - name: PGUSER
-              valueFrom:
-                secretKeyRef:
-                  name: prefect-postgresql
-                  key: username
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
                   name: prefect-postgresql
                   key: password
-            - name: PGDATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: prefect-postgresql
-                  key: database
             - name: PREFECT_SERVER__DATABASE__CONNECTION_URL
-              value: postgresql://$PGUSER@prefect-postgresql:5432/$PGDATABASE
+              value: postgresql://prefect@prefect-postgresql:5432/prefect
             - name: PREFECT_SERVER__HASURA__HOST
               value: prefect-hasura
             - name: PREFECT_SERVER__API__URL
@@ -105,10 +82,7 @@ spec:
             - name: PREFECT_SERVER__DATABASE__PORT
               value: "5432"
             - name: PREFECT_SERVER__DATABASE__USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: prefect-postgresql
-                  key: username
+              value: prefect
             - name: PREFECT_SERVER__DATABASE__PASSWORD
               valueFrom:
                 secretKeyRef:
