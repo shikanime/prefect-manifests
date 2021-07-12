@@ -24,4 +24,4 @@ secretGenerator:
     literals:
       - password=PvEdutDpOLPBT6pPMc04Yw==
 resources:
-  - ../../overlays/google
+  - ../../overlays/google_experimental
