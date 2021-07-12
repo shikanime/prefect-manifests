@@ -33,8 +33,6 @@ spec:
                   key: password
             - name: PREFECT_SERVER__DATABASE__CONNECTION_URL
               value: postgresql://prefect@prefect-postgresql:5432/prefect
-            - name: PREFECT_SERVER__HASURA__HOST
-              value: prefect-hasura
             - name: PREFECT_SERVER__API__URL
               value: http://prefect-hasura:3000/v1alpha1/graphql
             - name: PREFECT_SERVER__DATABASE__HOST
@@ -73,8 +71,6 @@ spec:
                   key: password
             - name: PREFECT_SERVER__DATABASE__CONNECTION_URL
               value: postgresql://prefect@prefect-postgresql:5432/prefect
-            - name: PREFECT_SERVER__HASURA__HOST
-              value: prefect-hasura
             - name: PREFECT_SERVER__API__URL
               value: http://prefect-hasura:3000/v1alpha1/graphql
             - name: PREFECT_SERVER__DATABASE__HOST
