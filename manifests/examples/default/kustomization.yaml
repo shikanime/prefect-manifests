@@ -1,5 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: prefect-system
 commonLabels:
   app.kubernetes.io/version: "2021.05.25"
   app.kubernetes.io/instance: prefect-server
@@ -20,7 +21,7 @@ images:
     newTag: "11.9.0-debian-10-r1"
 secretGenerator:
   - name: prefect-postgresql
-    files:
-      - password=PvEdutDpOLPBT6pPMc04Yw==
+    literals:
+      - password=3VIuXO/qWAoFrBTYQfGNug==
 resources:
-  - ../../manifests/overlays/google
+  - ../../overlays/default
